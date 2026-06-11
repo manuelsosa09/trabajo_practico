@@ -8,6 +8,7 @@ InstrumentHub es una aplicación desarrollada en Python utilizando Flet para la 
 
 * Manuel José Sosa Cristaldo
 * Sergio José Sosa Cristaldo
+* Fernando Damian Ayala Gonzales
 
 ## Tareas Realizadas
 
