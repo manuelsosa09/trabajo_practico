@@ -41,13 +41,7 @@ https://trello.com/invite/b/690a52011b98a819ca979953/ATTI6a2c52ba7b112da0596a713
 
 ## Link del despliegue en la nube
 
-PENDIENTE: colocar aquí el link de Render.
-
-Ejemplo:
-
-```text
 https://instrumenthub.onrender.com
-```
 
 ## Link del video de exposición
 
