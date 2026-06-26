@@ -6,7 +6,7 @@ echo "====================================="
 
 read -p "Ingrese mensaje del commit: " MSG
 
-if [ -z "" ]; then
+if [ -z "$MSG" ]; then
     MSG="Actualizacion automatica del proyecto"
 fi
 
@@ -14,7 +14,7 @@ echo "Agregando archivos a Git..."
 git add .
 
 echo "Creando commit..."
-git commit -m ""
+git commit -m "$MSG"
 
 echo "Subiendo cambios a GitHub..."
 git push origin main

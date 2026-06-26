@@ -1,4 +1,4 @@
-import flet as ft
+﻿import flet as ft
 from db import get_connection
 from datetime import datetime
 
@@ -12,12 +12,19 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
     historia_text = ft.Text("", expand=True)
     material_text = ft.Text("", expand=True)
     origen_text = ft.Text("", expand=True)
+
+    def get_image_src(imagen):
+        if imagen:
+            return imagen.replace("assets/", "")
+        return "images/piano.png"
+
     imagen = ft.Image(
-        src="assets/images/placeholder.png",
+        src="images/piano.png",
         width=300,
         height=300,
-        fit=ft.ImageFit.CONTAIN,
+        fit="contain",
     )
+
     comentario_input = ft.TextField(label="Agregar comentario", expand=True)
 
     def load_instrument():
@@ -40,13 +47,14 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
             return
 
         nombre, categoria, historia, material, origen, img = row
+
         nombre_text.value = nombre
         categoria_text.value = f"Categoría: {categoria}"
         historia_text.value = f"Historia: {historia}"
         material_text.value = f"Material: {material}"
         origen_text.value = f"Origen: {origen}"
-        if img:
-            imagen.src = img
+        imagen.src = get_image_src(img)
+
         page.update()
 
     def load_comments():
@@ -80,10 +88,12 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
                         subtitle=ft.Text(info, size=11),
                     )
                 )
+
         page.update()
 
     def add_comment(e):
         texto = comentario_input.value.strip()
+
         if usuario_id is None:
             mensaje.value = "Debes estar logueado para comentar."
         elif texto == "":
@@ -105,9 +115,11 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
             )
             conn.commit()
             conn.close()
+
             comentario_input.value = ""
             mensaje.value = "Comentario agregado."
             load_comments()
+
         page.update()
 
     def add_favorite(e):
@@ -122,6 +134,7 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
             "SELECT id FROM favoritos WHERE usuario_id = ? AND instrumento_id = ?",
             (usuario_id, instrumento_id),
         )
+
         if cursor.fetchone():
             mensaje.value = "Ya está en favoritos."
         else:
@@ -131,25 +144,29 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
             )
             conn.commit()
             mensaje.value = "Agregado a favoritos."
+
         conn.close()
         page.update()
 
     def volver_home(e):
         page.go("/home")
 
-    # Cargamos info
     load_instrument()
     load_comments()
 
     content = ft.Column(
-        [
+        controls=[
             nombre_text,
             categoria_text,
             ft.Row(
-                [
+                controls=[
                     imagen,
                     ft.Column(
-                        [historia_text, material_text, origen_text],
+                        controls=[
+                            historia_text,
+                            material_text,
+                            origen_text,
+                        ],
                         expand=True,
                         spacing=5,
                     ),
@@ -157,9 +174,9 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
                 spacing=20,
             ),
             ft.Row(
-                [
+                controls=[
                     ft.ElevatedButton(
-                        "Agregar a favoritos ⭐",
+                        "Agregar a favoritos",
                         on_click=add_favorite,
                     ),
                 ],
@@ -168,14 +185,14 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
             mensaje,
             ft.Text("Comentarios", size=18, weight="bold"),
             ft.Row(
-                [
+                controls=[
                     comentario_input,
                     ft.ElevatedButton("Enviar", on_click=add_comment),
                 ],
                 spacing=10,
             ),
             ft.Container(
-                comentarios_list,
+                content=comentarios_list,
                 expand=True,
                 padding=10,
             ),
@@ -188,6 +205,9 @@ def DetailView(page: ft.Page, instrumento_id: int, usuario_id: int | None) -> ft
 
     return ft.View(
         route=f"/detail/{instrumento_id}",
-        controls=[content],
+        controls=[
+            ft.AppBar(title=ft.Text("Detalle del instrumento")),
+            ft.Container(content=content, expand=True, padding=20),
+        ],
         scroll=ft.ScrollMode.AUTO,
     )

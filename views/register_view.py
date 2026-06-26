@@ -1,4 +1,4 @@
-import flet as ft
+﻿import flet as ft
 from auth import register_user
 
 
@@ -8,13 +8,13 @@ def RegisterView(page: ft.Page) -> ft.View:
     nombre_input = ft.TextField(label="Nombre", expand=True)
     correo_input = ft.TextField(label="Correo", expand=True)
     password_input = ft.TextField(
-        label="Contraseña",
+        label="ContraseÃ±a",
         password=True,
         can_reveal_password=True,
         expand=True,
     )
     password2_input = ft.TextField(
-        label="Confirmar contraseña",
+        label="Confirmar contraseÃ±a",
         password=True,
         can_reveal_password=True,
         expand=True,
@@ -32,29 +32,29 @@ def RegisterView(page: ft.Page) -> ft.View:
             return
 
         if "@" not in correo or "." not in correo:
-            mensaje.value = "Correo no válido."
+            mensaje.value = "Correo no vÃ¡lido."
             page.update()
             return
 
         if len(pwd1) < 6:
-            mensaje.value = "La contraseña debe tener al menos 6 caracteres."
+            mensaje.value = "La contraseÃ±a debe tener al menos 6 caracteres."
             page.update()
             return
 
         if pwd1 != pwd2:
-            mensaje.value = "Las contraseñas no coinciden."
+            mensaje.value = "Las contraseÃ±as no coinciden."
             page.update()
             return
 
         if register_user(nombre, correo, pwd1):
-            mensaje.value = "Usuario registrado. Ahora inicia sesión."
+            mensaje.value = "Usuario registrado. Ahora inicia sesiÃ³n."
         else:
-            mensaje.value = "No se pudo registrar. ¿El correo ya existe?"
+            mensaje.value = "No se pudo registrar. Â¿El correo ya existe?"
         page.update()
 
     content = ft.Column(
         [
-            ft.Text("Registrarse en InstrumentHub 🎵", size=25, weight="bold"),
+            ft.Text("Registrarse en InstrumentHub ðŸŽµ", size=25, weight="bold"),
             nombre_input,
             correo_input,
             password_input,
@@ -68,7 +68,6 @@ def RegisterView(page: ft.Page) -> ft.View:
         expand=True,
     )
 
-    return ft.View(
-        "/register",
-        controls=[content],
+    return ft.View(route="/register", controls=[content],
     )
+

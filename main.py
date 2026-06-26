@@ -1,4 +1,6 @@
+﻿import os
 import flet as ft
+
 from db import init_db
 from views.login_view import LoginView
 from views.register_view import RegisterView
@@ -9,20 +11,21 @@ from views.favorites_view import FavoritesView
 
 
 def main(page: ft.Page):
-    page.title = "InstrumentHub 🎵"
+    page.title = "InstrumentHub ðŸŽµ"
     page.theme_mode = ft.ThemeMode.DARK
-    page.window_width = 1000
-    page.window_height = 700
-    page.vertical_alignment = ft.MainAxisAlignment.START
+    page.bgcolor = "#101014"
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     init_db()
 
     def get_usuario_id():
-        return page.client_storage.get("usuario_id")
+        return getattr(page, "usuario_id", None)
 
-    def route_change(e):
+    def route_change(e=None):
         route = page.route or "/"
         page.views.clear()
+
         usuario_id = get_usuario_id()
 
         if route == "/":
@@ -50,22 +53,46 @@ def main(page: ft.Page):
             page.views.append(FavoritesView(page, usuario_id))
 
         elif route.startswith("/detail/"):
+            if usuario_id is None:
+                page.go("/")
+                return
+
             try:
                 inst_id = int(route.split("/")[-1])
-            except ValueError:
-                page.views.append(ft.View("/", [ft.Text("ID de instrumento inválido")]))
-            else:
                 page.views.append(
                     DetailView(page, instrumento_id=inst_id, usuario_id=usuario_id)
                 )
+            except ValueError:
+                page.views.append(
+                    ft.View(route="/", controls=[
+                            ft.Text("ID de instrumento invÃ¡lido", color="red")
+                        ],
+                    )
+                )
 
         else:
-            page.views.append(ft.View("/", [ft.Text("Página no encontrada")]))
+            page.views.append(
+                ft.View(route="/", controls=[
+                        ft.Text("PÃ¡gina no encontrada", color="red")
+                    ],
+                )
+            )
 
         page.update()
 
     page.on_route_change = route_change
-    page.go(page.route or "/")
+    route_change()
 
 
-ft.app(target=main)
+if __name__ == "__main__":
+    os.environ["FLET_FORCE_WEB_SERVER"] = "true"
+
+    port = int(os.environ.get("PORT", 8550))
+
+    ft.app(
+        target=main,
+        view=ft.AppView.WEB_BROWSER,
+        host="0.0.0.0",
+        port=port,
+        assets_dir="assets",
+    )

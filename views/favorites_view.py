@@ -1,5 +1,20 @@
-import flet as ft
+﻿import flet as ft
 from db import get_connection
+
+
+FALLBACK_IMAGE = "images/piano.png"
+
+
+def get_image_src(imagen):
+    if not imagen:
+        return FALLBACK_IMAGE
+
+    imagen = str(imagen).replace("\\", "/")
+
+    if imagen.startswith("assets/"):
+        imagen = imagen.replace("assets/", "", 1)
+
+    return imagen
 
 
 def FavoritesView(page: ft.Page, usuario_id: int) -> ft.View:
@@ -14,6 +29,7 @@ def FavoritesView(page: ft.Page, usuario_id: int) -> ft.View:
             FROM favoritos f
             JOIN instrumentos i ON f.instrumento_id = i.id
             WHERE f.usuario_id = ?
+            ORDER BY i.nombre
             """,
             (usuario_id,),
         )
@@ -32,21 +48,17 @@ def FavoritesView(page: ft.Page, usuario_id: int) -> ft.View:
                     ft.Card(
                         content=ft.ListTile(
                             leading=ft.Image(
-                                src=imagen or "assets/images/placeholder.png",
+                                src=get_image_src(imagen),
                                 width=60,
                                 height=60,
                                 fit=ft.ImageFit.CONTAIN,
                             ),
                             title=ft.Text(nombre),
-                            subtitle=ft.Text(
-                                f"Categoría: {categoria}", size=12
-                            ),
+                            subtitle=ft.Text(f"Categoría: {categoria}", size=12),
                             on_click=lambda e, _id=inst_id: page.go(f"/detail/{_id}"),
                         )
                     )
                 )
-
-        page.update()
 
     def volver_home(e):
         page.go("/home")
@@ -54,10 +66,10 @@ def FavoritesView(page: ft.Page, usuario_id: int) -> ft.View:
     load_favorites()
 
     content = ft.Column(
-        [
+        controls=[
             ft.Row(
-                [
-                    ft.Text("Tus favoritos", size=22, weight="bold"),
+                controls=[
+                    ft.Text("Tus favoritos", size=22, weight=ft.FontWeight.BOLD),
                     ft.ElevatedButton("Volver", on_click=volver_home),
                 ],
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -65,12 +77,14 @@ def FavoritesView(page: ft.Page, usuario_id: int) -> ft.View:
             items_column,
         ],
         expand=True,
+        scroll=ft.ScrollMode.AUTO,
     )
 
     return ft.View(
-        "/favoritos",
+        route="/favoritos",
         controls=[
             ft.AppBar(title=ft.Text("Favoritos")),
             ft.Container(content=content, expand=True, padding=20),
         ],
+        scroll=ft.ScrollMode.AUTO,
     )

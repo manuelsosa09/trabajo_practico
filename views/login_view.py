@@ -1,16 +1,20 @@
-import flet as ft
+﻿import flet as ft
 from auth import login_user
 
 
 def LoginView(page: ft.Page) -> ft.View:
-    mensaje = ft.Text("")
+    mensaje = ft.Text("", color="red")
 
-    correo_input = ft.TextField(label="Correo", expand=True)
+    correo_input = ft.TextField(
+        label="Correo",
+        width=350,
+    )
+
     password_input = ft.TextField(
-        label="Contraseña",
+        label="ContraseÃ±a",
         password=True,
         can_reveal_password=True,
-        expand=True,
+        width=350,
     )
 
     def login(e):
@@ -18,38 +22,64 @@ def LoginView(page: ft.Page) -> ft.View:
         password = password_input.value.strip()
 
         if not correo or not password:
-            mensaje.value = "Completa correo y contraseña."
+            mensaje.value = "Completa correo y contraseÃ±a."
             page.update()
             return
 
         user = login_user(correo, password)
+
         if user:
             usuario_id, nombre = user
-            page.client_storage.set("usuario_id", usuario_id)
-            page.client_storage.set("usuario_nombre", nombre)
+            page.usuario_id = usuario_id
+            page.usuario_nombre = nombre
             mensaje.value = ""
             page.go("/home")
         else:
             mensaje.value = "Correo o contraseña incorrectos"
+
         page.update()
 
-    content = ft.Column(
-        [
-            ft.Text("InstrumentHub 🎵", size=30, weight="bold"),
-            correo_input,
-            password_input,
-            ft.ElevatedButton("Entrar", on_click=login),
-            ft.TextButton(
-                "Registrarse", on_click=lambda e: page.go("/register")
-            ),
-            mensaje,
-        ],
-        alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        expand=True,
+    formulario = ft.Container(
+        width=430,
+        padding=30,
+        border_radius=15,
+        bgcolor="#1E1E1E",
+        content=ft.Column(
+            controls=[
+                ft.Text(
+                    "InstrumentHub ðŸŽµ",
+                    size=32,
+                    weight=ft.FontWeight.BOLD,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+                ft.Text(
+                    "Iniciar sesiÃ³n",
+                    size=18,
+                    text_align=ft.TextAlign.CENTER,
+                ),
+                correo_input,
+                password_input,
+                ft.ElevatedButton(
+                    "Entrar",
+                    width=350,
+                    on_click=login,
+                ),
+                ft.TextButton(
+                    "Registrarse",
+                    on_click=lambda e: page.go("/register"),
+                ),
+                mensaje,
+            ],
+            spacing=15,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        ),
     )
 
-    return ft.View(
-        "/",
-        controls=[content],
+    return ft.View(route="/", controls=[
+            ft.Container(
+                expand=True,
+                alignment=ft.Alignment(0, 0),
+                content=formulario,
+            )
+        ],
     )
