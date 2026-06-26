@@ -51,7 +51,7 @@ def FavoritesView(page: ft.Page, usuario_id: int) -> ft.View:
                                 src=get_image_src(imagen),
                                 width=60,
                                 height=60,
-                                fit=ft.ImageFit.CONTAIN,
+                                fit="contain"
                             ),
                             title=ft.Text(nombre),
                             subtitle=ft.Text(f"Categoría: {categoria}", size=12),

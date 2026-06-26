@@ -56,7 +56,7 @@ def ProfileView(page: ft.Page, usuario_id: int) -> ft.View:
         src=get_image_src(avatar_db),
         width=150,
         height=150,
-        fit=ft.ImageFit.COVER,
+        fit="cover",
         border_radius=75,
     )
 
