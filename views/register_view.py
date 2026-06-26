@@ -8,13 +8,13 @@ def RegisterView(page: ft.Page) -> ft.View:
     nombre_input = ft.TextField(label="Nombre", expand=True)
     correo_input = ft.TextField(label="Correo", expand=True)
     password_input = ft.TextField(
-        label="ContraseÃ±a",
+        label="Contraseña",
         password=True,
         can_reveal_password=True,
         expand=True,
     )
     password2_input = ft.TextField(
-        label="Confirmar contraseÃ±a",
+        label="Confirmar contraseña",
         password=True,
         can_reveal_password=True,
         expand=True,
@@ -32,29 +32,29 @@ def RegisterView(page: ft.Page) -> ft.View:
             return
 
         if "@" not in correo or "." not in correo:
-            mensaje.value = "Correo no vÃ¡lido."
+            mensaje.value = "Correo no válido."
             page.update()
             return
 
         if len(pwd1) < 6:
-            mensaje.value = "La contraseÃ±a debe tener al menos 6 caracteres."
+            mensaje.value = "La contraseña debe tener al menos 6 caracteres."
             page.update()
             return
 
         if pwd1 != pwd2:
-            mensaje.value = "Las contraseÃ±as no coinciden."
+            mensaje.value = "Las contraseñas no coinciden."
             page.update()
             return
 
         if register_user(nombre, correo, pwd1):
-            mensaje.value = "Usuario registrado. Ahora inicia sesiÃ³n."
+            mensaje.value = "Usuario registrado. Ahora inicia sesión."
         else:
-            mensaje.value = "No se pudo registrar. Â¿El correo ya existe?"
+            mensaje.value = "No se pudo registrar. ¿El correo ya existe?"
         page.update()
 
     content = ft.Column(
         [
-            ft.Text("Registrarse en InstrumentHub ðŸŽµ", size=25, weight="bold"),
+            ft.Text("Registrarse en InstrumentHub 🎵", size=25, weight="bold"),
             nombre_input,
             correo_input,
             password_input,

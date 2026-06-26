@@ -11,7 +11,7 @@ from views.favorites_view import FavoritesView
 
 
 def main(page: ft.Page):
-    page.title = "InstrumentHub ðŸŽµ"
+    page.title = "InstrumentHub 🎵"
     page.theme_mode = ft.ThemeMode.DARK
     page.bgcolor = "#101014"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
@@ -65,7 +65,7 @@ def main(page: ft.Page):
             except ValueError:
                 page.views.append(
                     ft.View(route="/", controls=[
-                            ft.Text("ID de instrumento invÃ¡lido", color="red")
+                            ft.Text("ID de instrumento invalido", color="red")
                         ],
                     )
                 )
@@ -73,7 +73,7 @@ def main(page: ft.Page):
         else:
             page.views.append(
                 ft.View(route="/", controls=[
-                        ft.Text("PÃ¡gina no encontrada", color="red")
+                        ft.Text("Página no encontrada", color="red")
                     ],
                 )
             )

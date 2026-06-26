@@ -11,7 +11,7 @@ def LoginView(page: ft.Page) -> ft.View:
     )
 
     password_input = ft.TextField(
-        label="ContraseÃ±a",
+        label="Contraseña",
         password=True,
         can_reveal_password=True,
         width=350,
@@ -22,7 +22,7 @@ def LoginView(page: ft.Page) -> ft.View:
         password = password_input.value.strip()
 
         if not correo or not password:
-            mensaje.value = "Completa correo y contraseÃ±a."
+            mensaje.value = "Completa correo y contraseña."
             page.update()
             return
 
@@ -47,13 +47,13 @@ def LoginView(page: ft.Page) -> ft.View:
         content=ft.Column(
             controls=[
                 ft.Text(
-                    "InstrumentHub ðŸŽµ",
+                    "InstrumentHub 🎵",
                     size=32,
                     weight=ft.FontWeight.BOLD,
                     text_align=ft.TextAlign.CENTER,
                 ),
                 ft.Text(
-                    "Iniciar sesiÃ³n",
+                    "Iniciar sesión",
                     size=18,
                     text_align=ft.TextAlign.CENTER,
                 ),
