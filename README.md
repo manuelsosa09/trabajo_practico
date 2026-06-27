@@ -45,7 +45,7 @@ https://instrumenthub.onrender.com
 
 ## Link del video de exposición
 
-PENDIENTE: colocar aquí el link del video.
+https://youtu.be/yccLnT_O6Ss
 
 ## Instalación y ejecución local
 
