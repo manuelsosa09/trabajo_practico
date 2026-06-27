@@ -16,9 +16,9 @@ La aplicación permite:
 
 ## Integrantes del grupo
 
-* Manuel José Sosa Cristaldo
-* Sergio José Sosa Cristaldo
-* Fernando
+* Manuel Sosa 
+* Sergio Sosa 
+* Fernando Ayala
 
 ## Tecnologías utilizadas
 
